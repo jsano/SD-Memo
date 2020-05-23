@@ -1,0 +1,60 @@
+package main
+
+import (
+	"fmt"
+	"math/rand"
+	"time"
+)
+
+func main() {
+	words := [26]string{"a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"}
+	num := rand.New(rand.NewSource(time.Now().UnixNano())).Int()
+	fmt.Println(num)
+
+	base26 := ""
+	for num1 := num; num1 > 0; num1 /= 26 {
+		base26 = string('a'+num1%26) + base26
+	}
+	fmt.Println(base26)
+
+	url := ""
+	for i := 0; i < 3; i += 1 {
+		url += words[base26[i]-'a'] + "-"
+	}
+	url = url[0:len(url)-1]
+	fmt.Println(url)
+}
+
+
+//using crypto
+package main
+
+import (
+	"fmt"
+	"crypto/rand"
+	"encoding/binary"
+)
+
+func main() {
+	words := [26]string{"a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"} //add words here
+	b := make([]byte, 28)
+	_, err := rand.Read(b)
+	if err != nil {
+   		panic(err)
+	}
+	num := binary.BigEndian.Uint64(b)
+	fmt.Println(num)
+
+	base26 := ""
+	for num1 := num; num1 > 0; num1 /= 26 {
+		base26 = string('a'+num1%26) + base26
+	}
+	fmt.Println(base26)
+
+	url := ""
+	for i := 0; i < 3; i += 1 {
+		url += words[base26[i]-'a'] + "-"
+	}
+	url = url[0:len(url)-1]
+	fmt.Println(url)
+}
